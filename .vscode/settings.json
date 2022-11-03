@@ -1,0 +1,24 @@
+{
+  "python.linting.pycodestyleEnabled": false,
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.python"
+  },
+  "python.linting.pylintEnabled": false,
+  "python.linting.pylintArgs": [
+    "--module-naming-style=snake_case",
+    "--const-naming-style=snake_case",
+    "--class-naming-style=PascalCase",
+    "--function-naming-style=camelCase",
+    "--method-naming-style=camelCase",
+    "--attr-naming-style=snake_case",
+    "--variable-naming-style=snake_case",
+    "--max-line-length=180"
+  ],
+  "python.formatting.provider": "autopep8",
+  "python.defaultInterpreterPath": "/usr/bin/env python3",
+  "python.languageServer": "Pylance",
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true,
+  "python.linting.flake8Enabled": true,
+  "python.linting.enabled": true
+}

@@ -1,0 +1,7 @@
+[firefly]
+host=https://firefly/host/adress
+token=private_access_token
+
+[n26]
+username=username
+password=password
