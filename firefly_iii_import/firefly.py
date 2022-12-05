@@ -7,26 +7,38 @@ from firefly_iii_client.model.transaction_split_store import TransactionSplitSto
 from firefly_iii_client.model.transaction_type_property import TransactionTypeProperty
 
 
+class Transaction:
+    def __init__(
+        self,
+        amount: int,
+        source: str,
+        destination: str,
+        date: datetime,
+        category: str = "",
+        description: str = "",
+        notes: str = "",
+        currency: str = "EUR",
+        type: TransactionTypeProperty = TransactionTypeProperty("transfer"),
+    ) -> None:
+        self.amount = amount
+        self.source = source
+        self.destination = destination
+        self.date = date
+        self.category = category
+        self.description = description
+        self.notes = notes
+        self.type = type
+        self.currency = currency
+
+
 class FireflyAPI:
-    class Transaction:
-        def __init__(self,
-                     amount: int,
-                     source: str,
-                     destination: str,
-                     date: datetime,
-                     category: str = "",
-                     description: str = "",
-                     notes: str = "",
-                     currency: str = "EUR",
-                     type: TransactionTypeProperty = TransactionTypeProperty("TRANSFER")) -> None:
-            self.amount = amount
-            self.source = source
-            self.destination = destination
-            self.date = date
-            self.category = category
-            self.description = description
-            self.notes = notes
-            self.type = type
+    class FireflyAPIError(Exception):
+        pass
+
+    class DuplicateTransactionError(Exception):
+        def __init__(self, *args: object, transaction: Transaction) -> None:
+            self.transaction = Transaction
+            super().__init__(*args)
 
     def __init__(self, host, token) -> None:
         self.conf = Configuration(host, access_token=token)
@@ -42,7 +54,7 @@ class FireflyAPI:
                     fire_webhooks=True,
                     transactions=[
                         TransactionSplitStore(
-                            amount=transaction.amount,
+                            amount=str(transaction.amount),
                             category_name=transaction.category,
                             currency_code=transaction.currency,
                             date=transaction.date,
@@ -51,9 +63,23 @@ class FireflyAPI:
                             notes=transaction.notes,
                             source_name=transaction.source,
                             type=transaction.type,
-                        )]
+                        )
+                    ],
                 )
-                api_response = api_instance.store_transaction(transaction_store)
-                print(api_response)
+                _ = api_instance.store_transaction(transaction_store)
             except ApiException as e:
-                print("Exception when calling AboutApi->get_about: %s\n" % e)
+                if body := getattr(e, "body", None):
+                    print(body)
+
+                    if (
+                        body
+                        == r'{"message":"Duplicate of transaction #6.","errors":{"transactions.0.description":["Duplicate of transaction #6."]}}'
+                    ):
+                        raise self.DuplicateTransactionError(
+                            f"Duplicate of transaction '{transaction.description}' from '{transaction.source}' to '{transaction.destination}'",
+                            transaction=transaction,
+                        )
+
+                raise self.FireflyAPIError(
+                    "Exception when calling AboutApi->get_about: %s\n" % e
+                )

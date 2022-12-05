@@ -14,11 +14,12 @@
     "--variable-naming-style=snake_case",
     "--max-line-length=180"
   ],
-  "python.formatting.provider": "autopep8",
+  "python.formatting.provider": "black",
   "python.defaultInterpreterPath": "/usr/bin/env python3",
   "python.languageServer": "Pylance",
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": true,
   "python.linting.flake8Enabled": true,
-  "python.linting.enabled": true
+  "python.linting.enabled": true,
+  "python.analysis.typeCheckingMode": "basic"
 }
