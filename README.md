@@ -1,5 +1,10 @@
 # Firefly III bank import
 
-Pythonscript for automatic import of transactions from different bankaccounts into Firefly III.
+Python programm/library for automatic import of transactions from different bankaccounts into Firefly III.
 
-## Usage
+## Supported Banks
+
+- [N26](https://n26.com/de-de)^*^
+
+
+>^*^ Realized using an inofficial API. Use with caution.
