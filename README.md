@@ -4,7 +4,7 @@ Python programm/library for automatic import of transactions from different bank
 
 ## Supported Banks
 
-- [N26](https://n26.com/de-de)^*^
+- [N26](https://n26.com/de-de)<sup>*</sup>
 
 
->^*^ Realized using an inofficial API. Use with caution.
+><sup>*</sup> Realized using an inofficial API. Use with caution.
