@@ -2,10 +2,7 @@
 
 Python programm/library for automatic import of transactions from different bankaccounts into Firefly III.
 
-## Table of contents:
-
 - [Firefly III bank import](#firefly-iii-bank-import)
-  - [Table of contents:](#table-of-contents)
   - [Supported Banks](#supported-banks)
     - [Extend Bank support](#extend-bank-support)
   - [Config](#config)
