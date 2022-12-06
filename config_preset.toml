@@ -2,6 +2,9 @@
 host="https://firefly/host/adress"
 token="private_access_token"
 
-[n26]
+[[n26]]
+name="name"
 username="username"
 password="password"
+device_token="token"
+mfa_type="app"

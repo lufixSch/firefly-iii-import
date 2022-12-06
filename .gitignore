@@ -2,3 +2,6 @@
 **config.toml
 
 __pycache__
+
+n26_login_store/
+last_executed
