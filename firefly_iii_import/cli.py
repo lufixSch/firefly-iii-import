@@ -1,12 +1,17 @@
 from firefly_iii_import import Config, DEFAULT_CONFIG_PATH, FireflyAPI, Importer
-from firefly_iii_import.loader import BaseLoader, N26Loader
-from typing import List
+from firefly_iii_import.loader import N26Loader
 from datetime import datetime
 import logging
 
 # rom firefly_iii_client.model.transaction_type_property import TransactionTypeProperty
 
 from argparse import ArgumentParser
+
+
+def _init_loader(config: Config):
+    for bank in config.banks:
+        if bank.type == "n26":
+            yield N26Loader(bank)  # type: ignore
 
 
 def main():
@@ -16,15 +21,15 @@ def main():
         prog="Firefly III Importer",
         description="Import all transaction from different banks in a given timeframe.\
 Alternatively auto import can be used. In this case the programm saves the last date and time of execution and imports all transactions since this date",
-        epilog="Date and time inputs need to be formated in ISO 8601 format.\
-Date: YYYY-MM-DD,\
+        epilog="Date and time inputs need to be formated in ISO 8601 format. \
+Date: YYYY-MM-DD, \
 Datetime: YYYY-MM-DDTHH:mm[+/-HH:mm]",
     )
     parser.add_argument(
         "-c",
         "--config",
         type=str,
-        help="Path to the config.toml",
+        help=f"Path to the config.toml (If no value is provided the script searches for a f3i.config.toml at ./ and ~/) [{DEFAULT_CONFIG_PATH}]",
         default=DEFAULT_CONFIG_PATH,
     )
 
@@ -42,17 +47,24 @@ Datetime: YYYY-MM-DDTHH:mm[+/-HH:mm]",
         help="End time limit for transactions. If no value is provided current date and time is used ('--from' needs to be defined)",
     )
 
+    parser.add_argument(
+        "-r",
+        "--reset",
+        action="store_true",
+        help="Reset auto import to the current date",
+    )
+
     args = parser.parse_args().__dict__
     config = Config.load(args["config"])
 
     firefly_api = FireflyAPI(config.firefly.host, config.firefly.token)
 
-    loader: List[BaseLoader] = []
-    for bank in config.banks:
-        if bank.type == "n26":
-            loader.append(N26Loader(bank))  # type: ignore
+    loader = _init_loader(config)
 
-    importer = Importer(loader, firefly_api)
+    importer = Importer([lo for lo in loader], firefly_api)
+
+    if args["reset"]:
+        return importer.reset_auto_import()
 
     start = args["from"]
     if args["to"] and not start:

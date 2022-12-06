@@ -11,7 +11,6 @@ from os import path
 
 from n26.api import Api
 from n26.config import Config
-from n26.const import ATM_WITHDRAW
 
 DATA_STORE_PATH = path.join(path.abspath(path.dirname(__file__)), "n26_login_store")
 
@@ -39,7 +38,17 @@ class N26Loader(BaseLoader):
         )
         self.client.get_account_info()
 
-    def load_transactions(self, start: datetime, end: datetime):
+    def load_transactions(self, start: datetime, end: datetime) -> List[Transaction]:
+        """Load all transactions in the given timeframe and convert them into a generic transaction
+
+        Args:
+            start (datetime): Start of the timeframe
+            end (datetime): End of the timeframe
+
+        Returns:
+            List[Transaction]: Loaded transactions as a list of generic transactions
+        """
+
         transactions: List[Dict[str, Any]] = self.client.get_transactions(
             from_time=int(start.timestamp() * 1000),
             to_time=int(end.timestamp() * 1000),
@@ -61,12 +70,12 @@ class N26Loader(BaseLoader):
                 category=" & ".join(
                     [
                         cat.capitalize()
-                        for cat in n26_trans["category"].lstrip("micro-v2-").split("-")
+                        for cat in n26_trans["category"]
+                        .removeprefix("micro-v2-")
+                        .split("-")
                     ]
                 ),
-                description="ATM Withdrawal"
-                if n26_trans["type"] == ATM_WITHDRAW
-                else n26_trans["referenceText"],
+                description=n26_trans["referenceText"],
                 currency=n26_trans["currencyCode"],
                 foreign_amount=n26_trans.get("originalAmount", None),
                 foreign_currency=n26_trans.get("originalCurrency", "EUR"),
@@ -76,3 +85,6 @@ class N26Loader(BaseLoader):
             )
             for n26_trans in transactions
         ]
+
+
+"".islower

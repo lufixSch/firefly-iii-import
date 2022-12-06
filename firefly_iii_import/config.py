@@ -3,11 +3,24 @@ from typing import Literal, List
 
 from os import path
 
-DEFAULT_CONFIG_PATH = path.join(
-    path.dirname(path.dirname(path.abspath(__file__))), "config.toml"
-)
+
+def _create_default_path():
+    cnf_path = "f3i.config.toml"
+    if path.isfile(cnf_path):
+        return path.abspath(cnf_path)
+
+    cnf_path = path.join(path.expanduser("~"), cnf_path)
+    if path.isfile(cnf_path):
+        return cnf_path
+
+    return ""
+
+
+DEFAULT_CONFIG_PATH = _create_default_path()
+"""Default path to config.toml"""
 
 BANK_TYPES = Literal["n26"]
+"""Different bank types which can be used in the config.toml"""
 
 
 class FireflyConfig:
@@ -73,13 +86,18 @@ class N26Config(BankConfig):
 
 
 class Config:
+    """firefly_iii_import configuration"""
 
     firefly: FireflyConfig
+    """ Location and access token for the Firefly III instance"""
 
     banks: List[BankConfig] = []
+    """ List of configurations for all different bank accounts"""
 
     @classmethod
     def load(cls, path: str):
+        """Load configuration from .toml file"""
+
         return cls(toml.load(path))
 
     def __init__(self, conf: dict) -> None:

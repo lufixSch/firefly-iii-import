@@ -53,6 +53,23 @@ class Importer:
         with open(META_FILE_PATH, "w") as f:
             f.write(end.isoformat())
 
+    def reset_auto_import(self):
+        """Reset auto import to the current date"""
+
+        info(
+            "----------------------------------------------------------------------------------------------------"
+        )
+        info(
+            "Auto importer is reseted. 'last_executed' timestamp is overwritten with current date"
+        )
+        info("The next time auto importer is executed it will start from this date")
+        info(
+            "----------------------------------------------------------------------------------------------------"
+        )
+
+        with open(META_FILE_PATH, "w+") as f:
+            f.write(datetime.now().isoformat())
+
     def run(self, start: datetime, end: datetime):
         """Load all transactions in the given timeframe from all given bank accounts and create a corresponding transaction in firefly"""
 

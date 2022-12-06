@@ -45,13 +45,23 @@ class FireflyAPI:
 
     class DuplicateTransactionError(Exception):
         def __init__(self, *args: object, transaction: Transaction) -> None:
-            self.transaction = Transaction
+            self.transaction = transaction
             super().__init__(*args)
 
     def __init__(self, host, token) -> None:
         self.conf = Configuration(host, access_token=token)
 
     def create_transaction(self, transaction: Transaction):
+        """Create a transaction in Firefly III
+
+        Args:
+            transaction (Transaction): The transaction which should be created
+
+        Raises:
+            FireflyAPI.DuplicateTransactionError: The transaction might be a duplicate
+            FireflyAPI.FireflyAPIError: While creating the transaction something went wrong
+        """
+
         with ApiClient(self.conf) as client:
             api_instance = transactions_api.TransactionsApi(client)
             transaction_dict: Dict[str, Any] = dict(

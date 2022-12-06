@@ -1,10 +1,13 @@
 [firefly]
-host="https://firefly/host/adress"
-token="private_access_token"
+host="https://firefly/host/adress"  # adress of your firefly instance
+token="personal_access_token"       # personal access token generated in firefly
 
-[[n26]]
-name="name"
-username="username"
-password="password"
-device_token="token"
-mfa_type="app"
+# Configuration for different bank accounts
+[[banks]]
+type="bank_type"                    # type of the bank (choose from 'n26')
+name="account_name"                 # name of the account in firefly
+username="username"                 # username/email of the account
+password="password"                 # password of the account
+device_token="token"                # custom uuid used to identify this device (python -c 'import uuid; print(uuid.uuid4())')
+mfa_type="app"                      # verification type for MFA (choose from 'app' and 'sms')
+store_login_data=true               # choose wether the login data should be stored in order to avoid MFA every time the script is executed
