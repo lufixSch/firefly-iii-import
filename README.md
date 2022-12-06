@@ -2,6 +2,27 @@
 
 Python programm/library for automatic import of transactions from different bankaccounts into Firefly III.
 
+## Table of contents:
+
+- [Firefly III bank import](#firefly-iii-bank-import)
+  - [Table of contents:](#table-of-contents)
+  - [Supported Banks](#supported-banks)
+    - [Extend Bank support](#extend-bank-support)
+  - [Config](#config)
+    - [Firefly](#firefly)
+    - [Banks](#banks)
+      - [N26](#n26)
+  - [CLI](#cli)
+  - [Python Module](#python-module)
+    - [Config](#config-1)
+    - [FireflyAPI](#fireflyapi)
+    - [Loader](#loader)
+    - [Importer](#importer)
+  - [Known Issues](#known-issues)
+    - [Timezones](#timezones)
+    - [Transactions between N26 spaces](#transactions-between-n26-spaces)
+    - [N26 Transaction limit](#n26-transaction-limit)
+
 ## Supported Banks
 
 - [N26](https://n26.com/de-de)<sup>*</sup>
