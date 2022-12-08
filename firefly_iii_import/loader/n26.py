@@ -85,6 +85,3 @@ class N26Loader(BaseLoader):
             )
             for n26_trans in transactions
         ]
-
-
-"".islower
