@@ -75,7 +75,7 @@ class N26Loader(BaseLoader):
                         .split("-")
                     ]
                 ),
-                description=n26_trans.get("referenceText", "-"),
+                description=n26_trans["referenceText"],
                 currency=n26_trans["currencyCode"],
                 foreign_amount=n26_trans.get("originalAmount", None),
                 foreign_currency=n26_trans.get("originalCurrency", "EUR"),
