@@ -1,6 +1,8 @@
 **.egg-info
 **config.toml
 
+build/
+
 __pycache__
 
 n26_login_store/

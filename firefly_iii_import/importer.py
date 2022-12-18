@@ -14,7 +14,7 @@ class Importer:
         self.loader = loader
         self.firefly_api = firely_api
 
-    def _load_import_start():
+    def _load_import_start(self):
         """Load start date and time for the auto import"""
 
         if not path.isfile(META_FILE_PATH):
