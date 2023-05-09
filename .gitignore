@@ -2,6 +2,7 @@
 **config.toml
 
 build/
+dist/
 
 __pycache__
 

@@ -1,3 +1,20 @@
+[tool.poetry]
+name = "firefly-iii-import"
+version = "1.0.1"
+description = "Pythonscript for automatic import of transactions from different bankaccounts into Firefly III"
+authors = ["LufixSch"]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+Firefly-III-API-Client = "^1.0.0"
+n26 = "^3.3.0"
+argparse = "^1.4.0"
+
+[tool.poetry.dev-dependencies]
+
 [build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+f3i = "firefly_iii_import.cli:main"
