@@ -240,7 +240,7 @@ At the moment there is no handling of timezones when loading and creating transa
 
 ### Transactions between N26 spaces
 
-Transaction between N26 spaces are not handled in this importer. In general the N26 API only provides transactions between the main space and other spaces. Those usually occur in Firefly III with a source or destination called something like **'From {Space A} to {Space B}'** in the category **'Scellaneous'**.
+Transaction between N26 spaces are not handled in this importer. In general the N26 API only provides transactions between the main space and other spaces. Those usually occur in Firefly III with a source or destination called something like **'From Space A to Space B'** in the category **'Scellaneous'**.
 
 The easiest workaround is to use Firefly III rules to change or delete those transactions.
 
